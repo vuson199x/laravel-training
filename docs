@@ -1,0 +1,86 @@
+// Các câu lệnh thường dùng trong php laravel
+
+1.0 php artisan serve
+Chạy chương trình
+
+1.1. npm run dev
+Build Web bên môi trường dev
+
+2. Migrate
+- php artisan migrate -> chạy vào hàm up()
+Dùng để cập nhật lại các table trên sql dựa trên các file trong folder datatable
+- php artisan migrate:rollback -> chạy vào hàm down()
+Dùng để come back lại datatable trong sql
+- php artisan migrate:refresh
+Dùng để refresh lại datatable trong sql nhưng xóa hết data trong table
+
+3. php artisan config:cache
+Dùng để clear cache khi cập nhật file trong folder config
+
+4. Controller
+- C1: Dùng để tạo 1 Controller
+-> php artisan make:controller nameController
+- C2: Dùng để tạo 1 Controller với đầy đủ tất cả các hàm view(), update(), show(),...
+-> php artisan make:controller nameController --resource
+- C3: Dùng để tạo 1 Controller API
+-> php artisan make:controller nameController --api
+
+5. Model
+- C1: Dùng để tạo 1 Model\
+-> php artisan make:model nameModel
+- C2: Dùng để tạo 1 Model trong folder Models + 1 bảng db tương ứng với nó
+-> php artisan make:model Models/nameModel -m
+=> Model đóng vai trò liên kết giữa db vs code theo dạng ORM (Object related mapping), tức là khi 1 dòng dữ liệu trong db
+tương ứng vs 1 object trong code. DB thay đổi thì code cũng thay đổi và ngược lại
+
+6. Route
+- Dùng để hiển thị tất cả router có trong hệ thống
+-> php artisan route:list
+- Except: Ngoại trừ 1 số hàm còn lại lấy tất các hàm trong Controller
+- Only: Chỉ dùng những hàm này trong Controller
+
+
+7. Seeder
+- Dùng để tạo dữ liệu mẫu cho 1 bảng trong database
+-> php artisan make:seeder nameTableSeeder
+- Để chạy hàm run trong seed ta dùng câu lệnh:
+-> composer dump-autoload
+-> php artisan db:seed
+=> Nằm trong thư mục database/seeds
+
+8. Request
+Dùng để validation dữ liệu
+- php artisan make:request StoreArticleRequest
+=> Nằm trong thư mục Http/Requests
+
+9. Session
+- Import Session: use Session;
+- Lưu giá trị vào Session: Session::put('key', value);
+- Gắn giá trị vào Session: Session::get('key');
+- Xóa bỏ khỏi bộ nhớ Session: Session::forget('key');
+
+10. Middleware (Phân quyền)
+- Đầu tiên, tạo bảng Role bằng Model và migrate
+- Tiếp theo, tạo dữ liệu mẫu gồm admin và user thông qua Seeder
+- Định nghĩa quan hệ Relationships trong model Role và model User:
++ 1 Model User thì liên kết vs 1 Model Role
++ 1 Model Role thì có nhiều user
+- Tạo 1 middleware như sau: php artisan make:middleware RoleMiddleware
+=> nằm trong folder App/Http/Middleware
+- Đăng ký middleware trong App/Http/Kernel.php
+
+=====================================================================================
+// Model:
++ Liên kết Model với migrate(datatable)
++ Model liên kết với nhau: 1vs1, 1vsN, NvsN (Tìm hiểu ở gg: Laravel Model Relationships)
++ Eloquent Model => Model được liên kết với migration => liên kết với db
++ ORM (Object related mapping)
++ fillable:
+  + Chỉ định các field sẽ được lưu xuống db
+
+// Seeder:
++ Dùng để tạo dữ liệu mẫu cho 1 bảng trong database
+Syntax: php artisan make:seeder ArticleTableSeeder
++ Dùng để chạy database seeder
+        composer dump-autoload
+        php artisan db:seed
